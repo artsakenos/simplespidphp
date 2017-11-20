@@ -1,17 +1,11 @@
 <?php
 
-namespace SimpleSAML\Store;
-
-use \SimpleSAML_Configuration as Configuration;
-use \SimpleSAML\Logger;
-use \SimpleSAML\Store;
-
 /**
  * A data store using a RDBMS to keep the data.
  *
  * @package SimpleSAMLphp
  */
-class SQL extends Store
+class SimpleSAML_Store_SQL extends SimpleSAML_Store
 {
     /**
      * The PDO object for our database.
@@ -50,23 +44,23 @@ class SQL extends Store
      */
     protected function __construct()
     {
-        $config = Configuration::getInstance();
+        $config = SimpleSAML_Configuration::getInstance();
+        do {
+			$dsn = $config->getString('store.sql.dsn');
+			$username = $config->getString('store.sql.username', null);
+			$password = $config->getString('store.sql.password', null);
+			$this->prefix = $config->getString('store.sql.prefix', 'simpleSAMLphp');
 
-        $dsn = $config->getString('store.sql.dsn');
-        $username = $config->getString('store.sql.username', null);
-        $password = $config->getString('store.sql.password', null);
-        $this->prefix = $config->getString('store.sql.prefix', 'simpleSAMLphp');
+			$this->pdo = new \PDO($dsn, $username, $password);
+			$this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
-        $this->pdo = new \PDO($dsn, $username, $password);
-        $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+			$this->driver = $this->pdo->getAttribute(\PDO::ATTR_DRIVER_NAME);
 
-        $this->driver = $this->pdo->getAttribute(\PDO::ATTR_DRIVER_NAME);
-
-        if ($this->driver === 'mysql') {
-            $this->pdo->exec('SET time_zone = "+00:00"');
-        }
-
-        $this->initTableVersionTable();
+			if ($this->driver === 'mysql') {
+				$this->pdo->exec('SET time_zone = "+00:00"');
+			}
+        } while ($this->initTableVersionTable() === false);
+		
         $this->initKVTable();
     }
 
@@ -76,21 +70,35 @@ class SQL extends Store
      */
     private function initTableVersionTable()
     {
+		static $count = 0;
         $this->tableVersions = array();
 
         try {
             $fetchTableVersion = $this->pdo->query('SELECT _name, _version FROM '.$this->prefix.'_tableVersion');
         } catch (\PDOException $e) {
-            $this->pdo->exec(
-                'CREATE TABLE '.$this->prefix.
-                '_tableVersion (_name VARCHAR(30) NOT NULL UNIQUE, _version INTEGER NOT NULL)'
-            );
-            return;
+            if ($count === 0) {
+				$orig = getcwd();
+				$root = $_SERVER['DOCUMENT_ROOT'];
+				chdir ($root);
+				if (is_writable('..') && file_exists('simplespidphp') == false) chdir('..');
+				$file =  'simplespidphp/sqlitedatabase.sq3';
+				@unlink ($file);
+				chdir($orig);
+				$count++;
+				return false;
+            } else {
+				$this->pdo->exec(
+					'CREATE TABLE IF NOT EXISTS '.$this->prefix.
+					'_tableVersion (_name VARCHAR(30) NOT NULL UNIQUE, _version INTEGER NOT NULL)'
+				);
+				return true;
+            }            
         }
 
         while (($row = $fetchTableVersion->fetch(\PDO::FETCH_ASSOC)) !== false) {
             $this->tableVersions[$row['_name']] = (int) $row['_version'];
         }
+        return true;
     }
 
 
@@ -109,12 +117,12 @@ class SQL extends Store
             // TEXT data type has size constraints that can be hit at some point, so we use LONGTEXT instead
             $text_t = 'LONGTEXT';
         }
-        $query = 'CREATE TABLE '.$this->prefix.
+        $query = 'CREATE TABLE IF NOT EXISTS '.$this->prefix.
                  '_kvstore (_type VARCHAR(30) NOT NULL, _key VARCHAR(50) NOT NULL, _value '.$text_t.
                  ' NOT NULL, _expire TIMESTAMP, PRIMARY KEY (_key, _type))';
         $this->pdo->exec($query);
 
-        $query = 'CREATE INDEX '.$this->prefix.'_kvstore_expire ON '.$this->prefix.'_kvstore (_expire)';
+        $query = 'CREATE INDEX IF NOT EXISTS '.$this->prefix.'_kvstore_expire ON '.$this->prefix.'_kvstore (_expire)';
         $this->pdo->exec($query);
 
         $this->setTableVersion('kvstore', 1);
@@ -201,7 +209,7 @@ class SQL extends Store
                 case '23505': // PostgreSQL
                     break;
                 default:
-                    Logger::error('Error while saving data: '.$e->getMessage());
+                    SimpleSAML\Logger::error('Error while saving data: '.$e->getMessage());
                     throw $e;
             }
         }
@@ -229,7 +237,7 @@ class SQL extends Store
      */
     private function cleanKVStore()
     {
-        Logger::debug('store.sql: Cleaning key-value store.');
+        SimpleSAML\Logger::debug('store.sql: Cleaning key-value store.');
 
         $query = 'DELETE FROM '.$this->prefix.'_kvstore WHERE _expire < :now';
         $params = array('now' => gmdate('Y-m-d H:i:s'));

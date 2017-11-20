@@ -115,7 +115,7 @@ class SimpleSAML_XML_Validator {
 		}
 
 		// Check the signature
-		if ($objXMLSecDSig->verify($objKey) !== 1) {
+		if (! $objXMLSecDSig->verify($objKey)) {
 			throw new Exception("Unable to validate Signature");
 		}
 

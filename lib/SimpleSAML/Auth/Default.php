@@ -87,7 +87,7 @@ class SimpleSAML_Auth_Default {
 	public static function logoutCompleted($state) {
 		assert('is_array($state)');
 		assert('array_key_exists("SimpleSAML_Auth_Default.ReturnURL", $state)');
-
+		if (!$state['SimpleSAML_Auth_Default.ReturnURL']) $state['SimpleSAML_Auth_Default.ReturnURL']="/"; //CHG InfoCert workaround
 		\SimpleSAML\Utils\HTTP::redirectTrustedURL($state['SimpleSAML_Auth_Default.ReturnURL']);
 	}
 

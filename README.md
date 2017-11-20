@@ -1,63 +1,54 @@
-SimpleSpidphp
-=============
-This is a Fork of SimpleSAMLphp
+SPIDINST II
+-----------
+Si basa su una versione modificata dello Spidinst di Paolo Bozzo.
+    https://github.com/retepasw/spidinst
+utilizza una libreria SimpleSaml preconfigurata disponibile su:
+    http://www.scuolacooperativa.net/drupal7/sites/default/files/simplespidphp.zip
+e facilita le operazioni di installazione anche su ambiente Drupal 8.
 
-* [SimpleSAMLphp homepage](https://simplesamlphp.org)
-* [SimpleSAMLphp Downloads](https://simplesamlphp.org/download)
+PREREQUISITI
+------------
+Il sito deve essere sotto https.
 
-Usage
------
+Questa configurazione di SimpleSamlPhp utilizza SQLite, installabile con
 
-* Install with [Composer](https://getcomposer.org/doc/00-intro.md), run the following command in your project:
+* sudo apt-get install php5-sqlite # per Php5+
+* sudo apt-get install php-sqlite3 # per Php7+
 
-```bash
-git clone https://github.com/dev4pa/simplespidphp.git
-cd simplespidphp
-composer install
-```
+INSTALLAZIONE
+-------------
+Una volta copiato tutto il pacchetto nella directory desiderata,
+e.g., libraries/simplespidphp
+modificare la costante SAML_PATH
+    define('SAML_PATH', 'libraries/simplespidphp');
+Su Drupal 8, per eliminare tutte le conseguenze dei redirect inserire nel .htaaccess
+le seguenti righe (adattandole al percorso scelto):
 
-* Creazione cartelle di lavoro per logs e certificati
-```bash
-mkdir log
-chmod 777 -R log
-mkdir cert
-```
+  # Liberiamo simplespidphp dai vincoli di Rewrite. 
+  RewriteCond %{REQUEST_URI} !^/libraries/simplespidphp
+  RewriteCond %{REQUEST_URI} !^/spid
 
-* Copia dei file di template per il file di configurazione di simplesamlphp e il file contenente i servizi da esporre con SPID
-```bash
-cp ../config-template/config.php.spid config/config.php
-cp ../config-template/authsources.php.spid config/authsources.php
-```
+Controllare che i permessi e i chown di simplespidphp siano OK (dovrebbero già esserlo ma è importante confermarlo, soprattutto sulla cartella config)
 
-* Creazione di un proprio certificato applicativo per la generazione dei metadati da inviare ad AGID
-```bash
-openssl req -newkey rsa:2048 -new -x509 -days 3652 -nodes -out cert/saml.crt -keyout cert/saml.pem
-```
-I files generati da questo comando devono essere configurati nel file config/authsources.php
 
-```
-    'nomeservizio-sp' => array(
-        'saml:SP',
-        'privatekey' => 'saml.pem',
-        'certificate' => 'saml.crt',
-        // The entity ID of this SP.
-        // Can be NULL/unset, in which case an entity ID is generated based on the metadata URL.
-        'entityID' => null,
-```
+UTILIZZO
+--------
+Avviare l'installer, all'indirizzo: https://.../libraries/simplespidphp/spidinst/
+E seguire le istruzioni a schermo.
 
-Una volta copiati editarli in modo da personalizzare il proprio server e i propri servizi
 
-* Configurare il proprio web server in modo da far puntare https://dominio.example.com/simplesaml alla cartella in cui è stato clonato il progetto dev4pa/simplespidphp
+TODO
+----
+Inserire una procedura per la modifica dei campi ancora hard coded (ad esempio
+il path della libreria).
 
-* Per generare il file con i metadata del proprio servizio andare su:
-```
-https://dominio.example.com/simplesaml
-```
-Nel tab "Federazione" comparirà sotto la voce "Metadati SAML 2.0 SP" il nome del nostro servizio, premere [ Mostra metadati ] ed inviare ad AGID il metadato in formato xml
+Eliminare vendor, ora inclusa brutalmente con una configurazione funzionante.
+Appena il modulo Spid sarà pronto e funzionante verrà testato l'update delle librerie.
 
-* Per provare l'autenticazione andare su:
-```
-https://dominio.example.com/simplesaml
-```
-Nel tab "Autenticazione" selezionare "Prova le fonti di autenticazione configurate", selezionare il nome del servizio, e scegliere nel menu a tendina il provider (Identity Provider) con il quale si vuol provare l'autenticazione
-
+NOTE TECNICHE
+-------------
+Sebbene sia utilizzato composer, la configurazione di base è caricata già insieme
+al pacchetto, perché non conosco eventuali problemi di compatibilità con altre 
+versioni delle librerie come è già successo con un installazione dell'ultimo saml.
+In futuro si può prevedere di ignorare nuovamente le cartelle di composer 
+e altre cartelle con i dati (decommentando le linee corrispondenti su -gitignore).

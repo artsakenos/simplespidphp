@@ -177,13 +177,10 @@ $t->data['links_federation'] = $links_federation;
 
 $t->data['enablematrix'] = $enablematrix;
 $t->data['funcmatrix'] = $funcmatrix;
-$t->data['requiredmap'] = array(
-    'recommended' => $t->noop('{core:frontpage:recommended}'),
-    'required' => $t->noop('{core:frontpage:required}'),
-    'optional' => $t->noop('{core:frontpage:optional}'),
-);
+$t->data['requiredmap'] = array('recommended' => $t->noop('{core:frontpage:recommended}'));
 $t->data['version'] = $config->getVersion();
-$t->data['directory'] = dirname(dirname(dirname(dirname(__FILE__))));
+// CHG protect folder name
+$t->data['directory'] = $isadmin? dirname(dirname(dirname(dirname(__FILE__)))) : '---';
 
 $t->show();
 

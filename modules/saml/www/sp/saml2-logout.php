@@ -55,16 +55,17 @@ if ($destination !== NULL && $destination !== \SimpleSAML\Utils\HTTP::getSelfURL
 if ($message instanceof \SAML2\LogoutResponse) {
 
 	$relayState = $message->getRelayState();
+/* CHG removed error
 	if ($relayState === NULL) {
 		// Somehow, our RelayState has been lost.
 		throw new SimpleSAML_Error_BadRequest('Missing RelayState in logout response.');
 	}
-
+*/
 	if (!$message->isSuccess()) {
 		SimpleSAML\Logger::warning('Unsuccessful logout. Status was: ' . sspmod_saml_Message::getResponseError($message));
 	}
 
-	$state = SimpleSAML_Auth_State::loadState($relayState, 'saml:slosent');
+	$state = SimpleSAML_Auth_State::loadState($relayState, 'saml:slosent', true); // CHG added allow missing
 	$state['saml:sp:LogoutStatus'] = $message->getStatus();
 	SimpleSAML_Auth_Source::completeLogout($state);
 

@@ -429,8 +429,25 @@ class SimpleSAML_Session implements Serializable
      * WARNING: please do not use this method directly unless you really need to and know what you are doing. Use
      * markDirty() instead.
      */
+	private function get_lib_path()
+	{
+	$result = '/var/simplesamlphp';
+	$orig = getcwd();
+	$root = $_SERVER['DOCUMENT_ROOT'];
+	chdir ($root);
+	if (file_exists('simplespidphp')) {
+		chdir('simplespidphp');
+		$result = getcwd();
+	} else if (is_writable('..') && file_exists('../simplespidphp')) {
+		chdir('../simplespidphp');
+		$result = getcwd();
+	}
+	chdir($orig);
+	return $result;
+	}
     public function save()
     {
+		$count = 0;
         if (!$this->dirty) {
             // session hasn't changed, don't bother saving it
             return;
@@ -441,12 +458,19 @@ class SimpleSAML_Session implements Serializable
 
         $sh = SimpleSAML_SessionHandler::getSessionHandler();
 
-        try {
+retry:
+       try {
             $sh->saveSession($this);
         } catch (Exception $e) {
             if (!($e instanceof SimpleSAML_Error_Exception)) {
                 $e = new SimpleSAML_Error_UnserializableException($e);
             }
+			if ($count == 0) {
+				$count++;
+				$file = $this->get_lib_path() . '/sqlitedatabase.sq3';//$config['store.sql.dsn'];
+				unlink ($file);
+				goto retry;
+			}
             SimpleSAML\Logger::error('Unable to save session.');
             $e->logError();
         }
@@ -704,13 +728,14 @@ class SimpleSAML_Session implements Serializable
             return;
         }
         foreach ($this->authData[$authority]['LogoutHandlers'] as $handler) {
+
             // verify that the logout handler is a valid function
             if (!is_callable($handler)) {
                 $classname = $handler[0];
                 $functionname = $handler[1];
 
                 throw new Exception(
-                    'Logout handler is not a valid function: '.$classname.'::'.
+                    'Logout handler is not a vaild function: '.$classname.'::'.
                     $functionname
                 );
             }

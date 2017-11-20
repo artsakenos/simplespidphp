@@ -271,7 +271,8 @@ abstract class SimpleSAML_Auth_Source
         $func = $state['LogoutCompletedHandler'];
         assert('is_callable($func)');
 
-        call_user_func($func, $state);
+        if ($func) call_user_func($func, $state); // CHG if added
+        else SimpleSAML_Auth_Default::logoutCompleted($state);
         assert(false);
     }
 

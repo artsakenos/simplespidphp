@@ -1217,6 +1217,10 @@ class SimpleSAML_Metadata_SAMLParser
             $attrname = $child->Name;
             $sp['attributes'][] = $attrname;
 
+            if ($child->isRequired) {
+                $sp['attributes.required'][] = $attrname;
+            }
+
             if ($child->isRequired !== null && $child->isRequired === true) {
                 $sp['attributes.required'][] = $attrname;
             }

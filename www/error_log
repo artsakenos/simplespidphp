@@ -1,0 +1,39 @@
+[03-Dec-2016 18:08:41 Europe/Berlin] PHP Warning:  require_once(/home/pdsydoky/paolo.nadiacaprotti/lib/_autoload.php): failed to open stream: No such file or directory in /home/pdsydoky/paolo.nadiacaprotti/spid/_include.php on line 32
+[03-Dec-2016 18:08:41 Europe/Berlin] PHP Fatal error:  require_once(): Failed opening required '/home/pdsydoky/paolo.nadiacaprotti/lib/_autoload.php' (include_path='.:/opt/cpanel/ea-php56/root/usr/share/pear') in /home/pdsydoky/paolo.nadiacaprotti/spid/_include.php on line 32
+[03-Dec-2016 18:23:29 Europe/Berlin] PHP Warning:  require_once(/home/pdsydoky/paolo.nadiacaprotti/lib/_autoload.php): failed to open stream: No such file or directory in /home/pdsydoky/paolo.nadiacaprotti/spid/_include.php on line 32
+[03-Dec-2016 18:23:29 Europe/Berlin] PHP Fatal error:  require_once(): Failed opening required '/home/pdsydoky/paolo.nadiacaprotti/lib/_autoload.php' (include_path='.:/opt/cpanel/ea-php56/root/usr/share/pear') in /home/pdsydoky/paolo.nadiacaprotti/spid/_include.php on line 32
+[03-Dec-2016 18:23:45 Europe/Berlin] PHP Warning:  require_once(/home/pdsydoky/paolo.nadiacaprotti/lib/_autoload.php): failed to open stream: No such file or directory in /home/pdsydoky/paolo.nadiacaprotti/spid/_include.php on line 32
+[03-Dec-2016 18:23:45 Europe/Berlin] PHP Fatal error:  require_once(): Failed opening required '/home/pdsydoky/paolo.nadiacaprotti/lib/_autoload.php' (include_path='.:/opt/cpanel/ea-php56/root/usr/share/pear') in /home/pdsydoky/paolo.nadiacaprotti/spid/_include.php on line 32
+[03-Dec-2016 23:05:42 Europe/Rome] PHP Fatal error:  Uncaught exception 'PDOException' with message 'SQLSTATE[HY000] [14] unable to open database file' in /home/pdsydoky/simplespidphp/lib/SimpleSAML/Store/SQL.php:56
+Stack trace:
+#0 /home/pdsydoky/simplespidphp/lib/SimpleSAML/Store/SQL.php(56): PDO->__construct('sqlite:/web/htd...', NULL, NULL)
+#1 /home/pdsydoky/simplespidphp/lib/SimpleSAML/Store.php(49): SimpleSAML_Store_SQL->__construct()
+#2 /home/pdsydoky/simplespidphp/lib/SimpleSAML/SessionHandler.php(121): SimpleSAML_Store::getInstance()
+#3 /home/pdsydoky/simplespidphp/lib/SimpleSAML/SessionHandler.php(39): SimpleSAML_SessionHandler::createSessionHandler()
+#4 /home/pdsydoky/simplespidphp/lib/SimpleSAML/Session.php(155): SimpleSAML_SessionHandler::getSessionHandler()
+#5 /home/pdsydoky/simplespidphp/lib/SimpleSAML/Session.php(410): SimpleSAML_Session->__construct(true)
+#6 /home/pdsydoky/simplespidphp/lib/SimpleSAML/Session.php(262): SimpleSAML_Session::useTransientSession()
+#7 /home/pdsydoky/simplespidphp/lib/SimpleSAML/Error/Error.php(217): SimpleSAML_Sessio in /home/pdsydoky/simplespidphp/lib/SimpleSAML/Store/SQL.php on line 56
+[03-Dec-2016 23:09:35 Europe/Rome] PHP Fatal error:  Uncaught exception 'PDOException' with message 'SQLSTATE[HY000] [14] unable to open database file' in /home/pdsydoky/simplespidphp/lib/SimpleSAML/Store/SQL.php:56
+Stack trace:
+#0 /home/pdsydoky/simplespidphp/lib/SimpleSAML/Store/SQL.php(56): PDO->__construct('sqlite:/web/htd...', NULL, NULL)
+#1 /home/pdsydoky/simplespidphp/lib/SimpleSAML/Store.php(49): SimpleSAML_Store_SQL->__construct()
+#2 /home/pdsydoky/simplespidphp/lib/SimpleSAML/SessionHandler.php(121): SimpleSAML_Store::getInstance()
+#3 /home/pdsydoky/simplespidphp/lib/SimpleSAML/SessionHandler.php(39): SimpleSAML_SessionHandler::createSessionHandler()
+#4 /home/pdsydoky/simplespidphp/lib/SimpleSAML/Session.php(155): SimpleSAML_SessionHandler::getSessionHandler()
+#5 /home/pdsydoky/simplespidphp/lib/SimpleSAML/Session.php(410): SimpleSAML_Session->__construct(true)
+#6 /home/pdsydoky/simplespidphp/lib/SimpleSAML/Session.php(262): SimpleSAML_Session::useTransientSession()
+#7 /home/pdsydoky/simplespidphp/lib/SimpleSAML/Error/Error.php(217): SimpleSAML_Sessio in /home/pdsydoky/simplespidphp/lib/SimpleSAML/Store/SQL.php on line 56
+[03-Dec-2016 23:22:36 Europe/Rome] PHP Fatal error:  Uncaught exception 'PDOException' with message 'SQLSTATE[HY000] [14] unable to open database file' in /home/pdsydoky/simplespidphp/lib/SimpleSAML/Store/SQL.php:56
+Stack trace:
+#0 /home/pdsydoky/simplespidphp/lib/SimpleSAML/Store/SQL.php(56): PDO->__construct('sqlite:/web/htd...', NULL, NULL)
+#1 /home/pdsydoky/simplespidphp/lib/SimpleSAML/Store.php(49): SimpleSAML_Store_SQL->__construct()
+#2 /home/pdsydoky/simplespidphp/lib/SimpleSAML/SessionHandler.php(121): SimpleSAML_Store::getInstance()
+#3 /home/pdsydoky/simplespidphp/lib/SimpleSAML/SessionHandler.php(39): SimpleSAML_SessionHandler::createSessionHandler()
+#4 /home/pdsydoky/simplespidphp/lib/SimpleSAML/Session.php(155): SimpleSAML_SessionHandler::getSessionHandler()
+#5 /home/pdsydoky/simplespidphp/lib/SimpleSAML/Session.php(410): SimpleSAML_Session->__construct(true)
+#6 /home/pdsydoky/simplespidphp/lib/SimpleSAML/Session.php(262): SimpleSAML_Session::useTransientSession()
+#7 /home/pdsydoky/simplespidphp/lib/SimpleSAML/Error/Error.php(217): SimpleSAML_Sessio in /home/pdsydoky/simplespidphp/lib/SimpleSAML/Store/SQL.php on line 56
+[04-Dec-2016 13:31:31 Europe/Rome] PHP Warning:  usort(): Array was modified by the user comparison function in /home/pdsydoky/simplespidphp/templates/selectidp-dropdown.php on line 49
+[04-Dec-2016 13:35:20 Europe/Rome] PHP Warning:  usort(): Array was modified by the user comparison function in /home/pdsydoky/simplespidphp/templates/selectidp-dropdown.php on line 49
+[04-Dec-2016 13:36:26 Europe/Rome] PHP Warning:  usort(): Array was modified by the user comparison function in /home/pdsydoky/simplespidphp/templates/selectidp-dropdown.php on line 49

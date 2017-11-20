@@ -116,6 +116,18 @@ if (empty($idpMetadata)) {
     $idpMetadata = $source->getIdPmetadata($idp);
 }
 
+//CHG+
+/*
+echo "<pre>";
+print_r($spMetadata);
+echo "--<br>";
+print_r($idpMetadata);
+echo "--<br>";
+print_r($response);
+echo "</pre>";
+exit;
+*/
+
 try {
     $assertions = sspmod_saml_Message::processResponse($spMetadata, $idpMetadata, $response);
 } catch (sspmod_saml_Error $e) {
@@ -134,7 +146,7 @@ $foundAuthnStatement = false;
 foreach ($assertions as $assertion) {
 
     // check for duplicate assertion (replay attack)
-    $store = \SimpleSAML\Store::getInstance();
+    $store = SimpleSAML_Store::getInstance();
     if ($store !== false) {
         $aID = $assertion->getId();
         if ($store->get('saml.AssertionReceived', $aID) !== null) {
