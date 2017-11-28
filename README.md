@@ -41,14 +41,14 @@ Avviare l'installer, all'indirizzo *<sito>/<percorso librerie>*, e.g.,: `https:/
 E seguire le istruzioni a schermo, compilando  con attenzione tutti i campi.
 
 A configurazione avvenuta, sarà possibile entrare nella pagina di amministrazione con la password precedentemente impostata.
-Se la pagina di amministrazione (e.g., https://miosito.gov.it/spid) non viene trovata significa o che ci sono problemi di rewrite, o che il link simbolico non è stato creato, lo si può creare con, e.g.,:
+Se la pagina di amministrazione (e.g., https://miosito.gov.it/spid) non viene trovata significa o che ci sono problemi di rewrite, o che il link simbolico non è stato creato, lo si può creare dalla root del sito con, e.g.,:
 ```
 ln -s /[rootweb_percorso_completo]/simplespidphp/www spid 
 ```
 
 Aprire il tab di Configurazione e controllare che non ci siano librerie required mancanti, e che i requisiti del server siano sufficienti, esempio nella figura seguente.
 
-![Check Configurazione PHP](https://github.com/artsakenos/simplespidphp/blob/master/docs-ssp/img02_CheckPhp.jpg | width=100 "Check Configurazione PHP")
+![Check Configurazione PHP](https://github.com/artsakenos/simplespidphp/blob/master/docs-ssp/img02_CheckPhp.jpg "Check Configurazione PHP")
 
 Certificazione dei Metadati
 ---------------------------
@@ -73,13 +73,12 @@ Compilare il form seguendo le istruzioni a schermo, inviarlo e annotare il ticke
 Arriverà nel giro di alcuni giorni una mail con un link tramite il quale visualizzare il ticket relativo e con l'informazione che il metadato è stato correttamente processato.
 A questo punto è possibile effettuare dal tab *Autenticazione* un tentativo di connessione tramite le proprie credenziali Spid (se se ne è in possesso),
 e.g., da https://miosito.gov.it/spid
-selezionare la scheda Autenticazione e Test delle fonti di autenticazione,
-selezionare default-sp (che corrisponde alla configurazione utilizzata)
-e dal menu a tendina effettuare l'IdP con il quale si vuole eseguire il login.
+selezionare la scheda *Autenticazione e Test delle fonti di autenticazione*,
+selezionare *default-sp* (che corrisponde alla configurazione utilizzata)
+e dal menu a tendina selezionare l'IdP con il quale si vuole eseguire il login.
 Se in seguito al login sarà possibile verificare i propri dati anagrafici la procedura sarà stata eseguita correttamente.
 
 Pubblicazione dei servizi
 -------------------------
 Quando i servizi interfacciati a SPID saranno pronti per essere pubblicati, il rappresentante legale dovrà compilare lo schema di convenzione fornito su richiesta e il file con l'indicazione dei servizi accessibili tramite spid.
-Inviare i documenti a protocollo@pec.agid.gov.it
-
+In seguito è necessario inviare i documenti a protocollo@pec.agid.gov.it.
